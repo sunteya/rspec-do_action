@@ -1,11 +1,9 @@
-require "rspec/do_action/version"
 require "rspec"
-# require "active_support/all"
 require "active_support/core_ext/module"
 require "active_support/concern"
 require "active_support/callbacks"
 
-
+require "rspec-do_action/version"
 
 module Rspec
   module DoAction
@@ -60,16 +58,14 @@ module Rspec
   end
 end
 
-
-RSpec.configure do |config|
-  config.include Rspec::DoAction
-end
-
-
 class RSpec::Core::Example
   def run_before_each_with_action
     run_before_each_without_action
     example_group_instance.send(:do_action_once)
   end
   alias_method_chain :run_before_each, :action
+end
+
+RSpec.configure do |config|
+  config.include Rspec::DoAction
 end
