@@ -1,5 +1,7 @@
 require "rspec/do_action/version"
 require "rspec"
+# require "active_support/all"
+require "active_support/core_ext/module"
 require "active_support/concern"
 require "active_support/callbacks"
 
@@ -15,20 +17,32 @@ module Rspec
     end
 
     def do_action
-      expect(@action).to_not be_nil, "need define action block"
+      expect(self.action).to_not be_nil, "need define action block"
       run_callbacks :do_action do
-        instance_eval &@action
+        instance_eval &self.action
       end
+    end
+
+    def do_action_once
+      if !@do_action_once
+        do_action
+        @do_action_once = true
+      end
+    end
+
+    def action
+      group = self.class.parent_groups.find { |group| group.instance_variable_defined?("@action") }
+      group.instance_variable_get("@action") if group
     end
 
     module ClassMethods
       def action(&block)
-        before { @action = block }
+        @action = block
       end
 
       def do_action(&block)
         action(&block) if block
-        before { do_action }
+        before { do_action_once }
       end
 
       def before_do_action(&block)
@@ -49,4 +63,13 @@ end
 
 RSpec.configure do |config|
   config.include Rspec::DoAction
+end
+
+
+class RSpec::Core::Example
+  def run_before_each_with_action
+    run_before_each_without_action
+    example_group_instance.send(:do_action_once)
+  end
+  alias_method_chain :run_before_each, :action
 end

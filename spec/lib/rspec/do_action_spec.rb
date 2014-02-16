@@ -1,29 +1,35 @@
 require "spec_helper"
+require "pry-nav"
+
 
 describe Rspec::DoAction do
   subject(:result) { [] }
-  
-  describe "action syntax" do
-    action { result << 1 }
-    it { should eq [] }
 
-    context 'with do_action' do
-      do_action
-      
-      it { should eq [ 1 ]}
+  describe "automatic invoke after hooks" do
+    before { result << 0 }
+    action { result << 2 }
+    before { result << 1 }
+    it { should eq [ 0, 1, 2 ] }
+  end
+
+  describe "explicit invoke should before hooks" do
+    do_action { result << 2 }
+    before { result << 3 }
+    it { should eq [ 2, 3 ] }
+  end
+
+  describe "nested example" do
+    action { result << 2 }
+
+    context "with override define" do
+      action { result << 1 }
+      it { should eq [ 1 ] }
+    end
+    
+    context "with hooks" do
+      before { result << 1 }
+      it { should eq  [ 1 , 2 ] }
     end
   end
 
-  describe "do_action syntax" do
-    do_action { result << 1 }
-    it { should eq [ 1 ] }
-  end
-
-  describe "do_action callback" do
-    do_action { result << 1 }
-    before_do_action { result << 0 }
-    after_do_action { result << 2 }
-
-    it { should eq [ 0, 1, 2 ] }
-  end
 end
