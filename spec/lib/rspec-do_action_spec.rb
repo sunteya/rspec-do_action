@@ -1,6 +1,4 @@
 require "spec_helper"
-require "pry-nav"
-
 
 describe Rspec::DoAction do
   subject(:result) { [] }
@@ -47,5 +45,4 @@ describe Rspec::DoAction do
       it { do_action; should eq [ 1, 2 ] }
     end
   end
-
 end
