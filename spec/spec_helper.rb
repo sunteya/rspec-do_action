@@ -1,4 +1,5 @@
 require "rspec-do_action"
+require "pry-nav"
 
 RSpec.configure do |config|
   config.treat_symbols_as_metadata_keys_with_true_values = true if RSpec::Version::STRING =~ /^2/
