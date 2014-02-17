@@ -1,6 +1,6 @@
 # Rspec::DoAction
 
-TODO: Write a gem description
+add 'acton' and some useful methods for rspec one-liner syntax.
 
 ## Installation
 
