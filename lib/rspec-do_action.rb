@@ -1,34 +1,32 @@
 require "rspec"
-require "active_support/core_ext/module"
-require "active_support/concern"
-
 require "rspec-do_action/version"
 
 module Rspec
   module DoAction
-    extend ActiveSupport::Concern
 
-    def do_action
-      expect(action).to_not be_nil, "need define action block"
-      instance_eval &action
-    end
-
-    def auto_do_action_once
-      return if find_variable("@skip_do_action")
-
-      if !@auto_do_action_once
-        do_action
-        @auto_do_action_once = true
+    module InstanceMethods
+      def do_action
+        expect(action).to_not be_nil, "need define action block"
+        instance_eval &action
       end
-    end
 
-    def action
-      find_variable("@action")
-    end
+      def auto_do_action_once
+        return if find_variable("@skip_do_action")
 
-    def find_variable(name)
-      group = self.class.parent_groups.find { |group| group.instance_variable_defined?(name) }
-      group.instance_variable_get(name) if group
+        if !@auto_do_action_once
+          do_action
+          @auto_do_action_once = true
+        end
+      end
+
+      def action
+        find_variable("@action")
+      end
+
+      def find_variable(name)
+        group = self.class.parent_groups.find { |group| group.instance_variable_defined?(name) }
+        group.instance_variable_get(name) if group
+      end
     end
 
     module ClassMethods
@@ -53,9 +51,11 @@ class RSpec::Core::Example
     run_before_each_without_action
     example_group_instance.send(:auto_do_action_once)
   end
-  alias_method_chain :run_before_each, :action
+  alias_method :run_before_each_without_action, :run_before_each
+  alias_method :run_before_each, :run_before_each_with_action
 end
 
 RSpec.configure do |config|
-  config.include Rspec::DoAction
+  config.include Rspec::DoAction::InstanceMethods
+  config.extend Rspec::DoAction::ClassMethods
 end
