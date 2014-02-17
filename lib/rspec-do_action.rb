@@ -1,7 +1,6 @@
 require "rspec"
 require "active_support/core_ext/module"
 require "active_support/concern"
-require "active_support/callbacks"
 
 require "rspec-do_action/version"
 
@@ -9,16 +8,9 @@ module Rspec
   module DoAction
     extend ActiveSupport::Concern
 
-    included do
-      include ActiveSupport::Callbacks
-      define_callbacks :do_action
-    end
-
     def do_action
       expect(self.action).to_not be_nil, "need define action block"
-      run_callbacks :do_action do
-        instance_eval &self.action
-      end
+      instance_eval &self.action
     end
 
     def do_action_once
@@ -41,18 +33,6 @@ module Rspec
       def do_action(&block)
         action(&block) if block
         before { do_action_once }
-      end
-
-      def before_do_action(&block)
-        set_callback :do_action, :before, &block
-      end
-
-      def after_do_action(&block)
-        set_callback :do_action, :after, &block
-      end
-
-      def around_do_action(&block)
-        set_callback :do_action, :around, &block
       end
     end
   end
