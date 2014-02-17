@@ -1,4 +1,4 @@
-# Rspec::DoAction
+# Rspec::DoAction [![Build Status](https://travis-ci.org/sunteya/rspec-do_action.png?branch=master)](https://travis-ci.org/sunteya/rspec-do_action)
 
 add 'acton' and some useful methods for rspec one-liner syntax.
 
