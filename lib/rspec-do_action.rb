@@ -10,8 +10,9 @@ module Rspec
         instance_eval &action
       end
 
-      def auto_do_action_once
+      def auto_do_action_once(force = false)
         return if find_variable("@skip_do_action")
+        return if !force && action.nil?
 
         if !@auto_do_action_once
           do_action
@@ -36,7 +37,7 @@ module Rspec
 
       def do_action(&block)
         action(&block) if block
-        before { auto_do_action_once }
+        before { auto_do_action_once(true) }
       end
 
       def skip_do_action

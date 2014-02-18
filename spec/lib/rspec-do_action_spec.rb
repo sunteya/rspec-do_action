@@ -45,4 +45,9 @@ describe Rspec::DoAction do
       it { do_action; should eq [ 1, 2 ] }
     end
   end
+
+  describe "other rspec without action" do
+    before { result << 1 }
+    it { should eq [ 1 ] }
+  end
 end
