@@ -1,6 +1,7 @@
 # Rspec::DoAction 
 
 [![Build Status](https://travis-ci.org/sunteya/rspec-do_action.png?branch=master)](https://travis-ci.org/sunteya/rspec-do_action)
+[![Coverage Status](https://coveralls.io/repos/sunteya/rspec-do_action/badge.png)](https://coveralls.io/r/sunteya/rspec-do_action)
 [![Code Climate](https://codeclimate.com/github/sunteya/rspec-do_action.png)](https://codeclimate.com/github/sunteya/rspec-do_action)
 [![Dependency Status](https://gemnasium.com/sunteya/rspec-do_action.png)](https://gemnasium.com/sunteya/rspec-do_action)
 [![Gem Version](https://badge.fury.io/rb/rspec-do_action.png)](http://badge.fury.io/rb/rspec-do_action)
