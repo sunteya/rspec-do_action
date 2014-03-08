@@ -1,4 +1,4 @@
-require "rspec"
+require "rspec/core"
 require "rspec-do_action/version"
 
 module Rspec
