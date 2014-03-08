@@ -1,3 +1,4 @@
+require "rspec"
 require "rspec-do_action"
 require "pry-nav"
 
