@@ -48,12 +48,12 @@ module Rspec
 end
 
 class RSpec::Core::Example
-  def run_before_each_with_action
-    run_before_each_without_action
+  def run_before_example_with_action
+    run_before_example_without_action
     example_group_instance.send(:auto_do_action_once)
   end
-  alias_method :run_before_each_without_action, :run_before_each
-  alias_method :run_before_each, :run_before_each_with_action
+  alias_method :run_before_example_without_action, :run_before_example
+  alias_method :run_before_example, :run_before_example_with_action
 end
 
 RSpec.configure do |config|
