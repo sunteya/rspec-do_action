@@ -1,6 +1,6 @@
 require "rspec"
-require "rspec-do_action"
 require "pry-nav"
+require "rspec-do_action"
 
 require 'coveralls'
 Coveralls.wear!
