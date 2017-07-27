@@ -36,14 +36,14 @@ end
 
 describe "skip auto 'do_action' invoke" do
   action(skip: true) { raise RuntimeError }
-  it { expect{ do_action }.to raise_error }
+  it { expect{ do_action }.to raise_error(RuntimeError) }
 end
 
 describe "skip auto 'do_action' invoke" do
   action { raise RuntimeError }
   skip_do_action
 
-  it { expect{ do_action }.to raise_error }
+  it { expect{ do_action }.to raise_error(RuntimeError) }
 end
 ```
 

@@ -1,10 +1,5 @@
-if ENV["CODECLIMATE_REPO_TOKEN"]
-  require "codeclimate-test-reporter"
-  CodeClimate::TestReporter.start
-else
-  require 'simplecov'
-  SimpleCov.start("test_frameworks")
-end
+require 'simplecov'
+SimpleCov.start("test_frameworks")
 
 require "rspec"
 require "pry-nav"
