@@ -31,7 +31,8 @@ module Rspec
     end
 
     module ClassMethods
-      def action(&block)
+      def action(options = {}, &block)
+        @skip_do_action = options[:skip]
         @action = block
       end
 

@@ -23,10 +23,20 @@ describe Rspec::DoAction do
       action { result << 0 }
       it { should eq [ 0 ] }
     end
-    
+
     context "with hooks" do
       before { result << 1 }
       it { should eq  [ 1 , 2 ] }
+    end
+  end
+
+  describe "action with skip" do
+    action(skip: true) { result << 2 }
+    before { result << 1 }
+    it { should eq [ 1 ] }
+
+    context "when invoke in example" do
+      it { do_action; should eq [ 1, 2 ] }
     end
   end
 
