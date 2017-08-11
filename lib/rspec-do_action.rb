@@ -36,8 +36,9 @@ module Rspec
         @action = block
       end
 
-      def do_action(&block)
-        action(&block) if block
+      def do_action(options = {}, &block)
+        @skip_do_action = false
+        action(options, &block) if block
         before { auto_do_action_once(true) }
       end
 
