@@ -1,8 +1,7 @@
 script: "bundle exec rake spec"
 rvm:
-  - 2.1.0
+  - 2.5.0
   - 2.0.0
-  - 1.9.3
 gemfile:
   - Gemfile
   - gemfiles/rspec2.gemfile
