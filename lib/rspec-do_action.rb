@@ -5,23 +5,26 @@ module Rspec
   module DoAction
 
     module InstanceMethods
-      def do_action
-        expect(action).to_not be_nil, "need define action block"
-        instance_eval &action
+      def do_action(*args)
+        expect(action_proc).to_not be_nil, "need define action block"
+        instance_exec *args, &action_proc
       end
 
-      def auto_do_action_once(force = false)
-        return if find_variable("@skip_do_action")
-        return if !force && action.nil?
+      def invoke_do_action_once(example, force: false)
+        return if !action_proc
+        return if !force && skip_do_action?
+        return if @do_action_once_invoked
 
-        if !@auto_do_action_once
-          do_action
-          @auto_do_action_once = true
-        end
+        do_action(example)
+        @do_action_once_invoked = true
       end
 
-      def action
-        find_variable("@action")
+      def action_proc
+        find_variable("@action_proc")
+      end
+
+      def skip_do_action?
+        !!find_variable("@skip_do_action")
       end
 
       def find_variable(name)
@@ -33,13 +36,13 @@ module Rspec
     module ClassMethods
       def action(options = {}, &block)
         @skip_do_action = options[:skip]
-        @action = block
+        @action_proc = block
       end
 
       def do_action(options = {}, &block)
         @skip_do_action = false
         action(options, &block) if block
-        before { auto_do_action_once(true) }
+        before { |example| invoke_do_action_once(example, force: true) }
       end
 
       def skip_do_action
@@ -50,9 +53,9 @@ module Rspec
 end
 
 class RSpec::Core::Example
-  def run_before_example_with_action
+  def run_before_example_with_action(*args)
     run_before_example_without_action
-    example_group_instance.send(:auto_do_action_once)
+    example_group_instance.send(:invoke_do_action_once, self, force: false)
   end
 
   if private_method_defined?(:run_before_example)

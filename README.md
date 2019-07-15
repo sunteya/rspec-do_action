@@ -45,6 +45,11 @@ describe "skip auto 'do_action' invoke" do
 
   it { expect{ do_action }.to raise_error(RuntimeError) }
 end
+
+describe 'action with metadata', foo: 1 do
+  action { |example| expect(example.metadata[:foo]).to eq 1; @result = true }
+  it { expect(@result).to eq true }
+end
 ```
 
 ## Contributing
